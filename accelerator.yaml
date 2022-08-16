@@ -1,6 +1,6 @@
 accelerator:
   displayName: Node Function
-  description: Node.js function
+  description: A Node.js sample function using FaaS Node.js Runtime Framework
   iconUrl: https://raw.githubusercontent.com/sample-accelerators/java-functions-accelerator/main/functions-icon.png
   tags:
   - node
@@ -8,140 +8,56 @@ accelerator:
   - serverless
   - knative
   - faas
+  - SomethingCapitalized
 
-  # Accelerator GUI
+  # options for the UI
   options:
-  - name: buildType
-    inputType: select
-    label: Project Type
-    choices:
-    - value: maven
-      text: Maven
-    - value: gradle
-      text: Gradle
-    defaultValue: maven
-    required: true
-
-  - name: interfaceType
-    inputType: select
-    label: Event Type
-    choices:
-    - value: http
-      text: HTTP Function
-    - value: cloudevents
-      text: CloudEvents Function (Experimental)
-    defaultValue: http
-    required: true
-
   - name: includeTap
     label: "Include TAP deployment resources?"
     inputType: checkbox
     dataType: boolean
     defaultValue: true
-    
-  - name: gitUrl
-    label: Git Repository URL
-    description: Change this to the Git repository you will use to store this function's files
-    inputType: text
-    dependsOn:
-      name: includeTap
-    dataType: string
-    required: true
-    defaultValue: "https://github.com/sample-accelerators/java-functions-accelerator.git"
-    
-  - name: gitBranch
-    label: Git Repository Branch
-    description: The corresponding branch of the Git repository
-    inputType: text
-    dependsOn:
-      name: includeTap
-    dataType: string
-    required: true
-    defaultValue: "main"
 
 engine:
   merge:
-    # Core files
-    - include: [ "src/**", "func.yaml", "LICENSE", "NOTICE", ".gitignore" ]
-
-    # README files
-    - include: [ "README.md", "DEPLOYING.md" ]
+    - include: [ "**" ]
+      exclude: [ "package.json", "config/**", "catalog/**", "README.md", "DEPLOYING.md" ]
+    - include: [ "package.json" ]
       chain:
       - type: ReplaceText
         substitutions:
-        - text: my-java-fn
+        - text: node-express
           with: "#artifactId"
-
-    # Maven files
-    - include: [ ".mvn/**", "mvnw", "mvnw.bat" ]
-      condition: "#buildType == 'maven'"
-    - include: [ "pom.xml", "jar-assembly.xml" ]
-      condition: "#buildType == 'maven' && #interfaceType == 'http'"
-      chain:
-      - type: ReplaceText
-        substitutions:
-        - text: my-java-fn
-          with: "#artifactId"
-    - include: [ "cloudevents/pom.xml", "cloudevents/jar-assembly.xml" ]
-      condition: "#buildType == 'maven' && #interfaceType == 'cloudevents'"
-      chain:
-      - type: ReplaceText
-        substitutions:
-        - text: my-java-fn
-          with: "#artifactId"
-      - type: RewritePath
-        rewriteTo: "#filename"
-
-    # Gradle files
-    - include: [ "gradle/**", "gradlew", "gradlew.bat" ]
-      condition: "#buildType == 'gradle'"
-    - include: [ "settings.gradle" ]
-      condition: "#buildType == 'gradle'"
-      chain:
-      - type: ReplaceText
-        substitutions:
-        - text: my-java-fn
-          with: "#artifactId"
-    - include: [ "build.gradle" ]
-      condition: "#buildType == 'gradle' && #interfaceType == 'http'"
-    - include: [ "cloudevents/build.gradle" ]
-      condition: "#buildType == 'gradle' && #interfaceType == 'cloudevents'"
-      chain:
-      - type: RewritePath
-        rewriteTo: "#filename"
-
-    # Replace HTTP with CloudEvents
-    - include: [ "cloudevents/Hire.java" ]
-      condition: "#interfaceType == 'cloudevents'"
-      chain:
-      - type: RewritePath
-        rewriteTo: "'src/main/java/functions/Hire.java'"
-
-    # TAP files
     - include: [ "config/workload.yaml" ]
       condition: "#includeTap"
       chain:
-        - type: ReplaceText
-          substitutions:
-            - text: https://github.com/sample-accelerators/java-functions-accelerator.git
-              with: "#gitUrl"
-            - text: main
-              with: "#gitBranch"
-            - text: my-java-fn
-              with: "#artifactId"
-        - type: RewritePath
-          rewriteTo: "'config/' + #filename"
+      - type: ReplaceText
+        substitutions:
+        - text: node-express
+          with: "#artifactId"
     - include: [ "catalog/catalog-info.yaml" ]
       condition: "#includeTap"
       chain:
       - type: ReplaceText
         substitutions:
-        - text: my-java-fn
+        - text: node-express
           with: "#artifactId"
-    - include: [ "Tiltfile" ]
-      condition: "#includeTap"
-      chain:
-      - type: ReplaceText
-        substitutions:
-        - text: my-java-fn
-          with: "#artifactId"
+    - name: README
+      type: Combo
+      onConflict: Append
+      merge:
+      - include: [ "README.md"]
+        chain:
+        - type: ReplaceText
+          substitutions:
+          - text: node-express
+            with: "#artifactId"
+      - include: [ "DEPLOYING.md" ]
+        condition: "#includeTap"
+        chain:
+        - type: ReplaceText
+          substitutions:
+          - text: node-express
+            with: "#artifactId"
+        - type: RewritePath
+          rewriteTo: "'README.md'"

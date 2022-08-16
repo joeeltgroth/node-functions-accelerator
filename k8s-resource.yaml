@@ -1,9 +1,9 @@
 apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
 kind: Accelerator
 metadata:
-  name: java-function
+  name: node-function
 spec:
   git:
-    url: https://github.com/joeeltgroth/java-functions-accelerator
+    url: https://github.com/joeeltgroth/node-functions-accelerator
     ref:
-      branch: PDY-1121-fat-jar
+      branch: main

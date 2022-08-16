@@ -1,13 +1,13 @@
 accelerator:
-  displayName: Java Function
-  description: Java function powered by Function Buildpacks for Knative
+  displayName: Node Function
+  description: Node.js function
   iconUrl: https://raw.githubusercontent.com/sample-accelerators/java-functions-accelerator/main/functions-icon.png
   tags:
-  - java
-  - spring
+  - node
   - function
   - serverless
   - knative
+  - faas
 
   # Accelerator GUI
   options:

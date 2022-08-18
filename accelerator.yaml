@@ -25,21 +25,21 @@ engine:
       chain:
       - type: ReplaceText
         substitutions:
-        - text: node-express
+        - text: node-function
           with: "#artifactId"
     - include: [ "config/workload.yaml" ]
       condition: "#includeTap"
       chain:
       - type: ReplaceText
         substitutions:
-        - text: node-express
+        - text: node-function
           with: "#artifactId"
     - include: [ "catalog/catalog-info.yaml" ]
       condition: "#includeTap"
       chain:
       - type: ReplaceText
         substitutions:
-        - text: node-express
+        - text: node-function
           with: "#artifactId"
     - name: README
       type: Combo
@@ -49,14 +49,14 @@ engine:
         chain:
         - type: ReplaceText
           substitutions:
-          - text: node-express
+          - text: node-function
             with: "#artifactId"
       - include: [ "DEPLOYING.md" ]
         condition: "#includeTap"
         chain:
         - type: ReplaceText
           substitutions:
-          - text: node-express
+          - text: node-function
             with: "#artifactId"
         - type: RewritePath
           rewriteTo: "'README.md'"

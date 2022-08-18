@@ -10,7 +10,7 @@ metadata:
     - knative
     - faas
   annotations:
-    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=node-express'
+    'backstage.io/kubernetes-label-selector': 'app.kubernetes.io/part-of=node-function'
 spec:
   type: service
   lifecycle: experimental

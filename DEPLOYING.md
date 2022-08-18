@@ -6,42 +6,46 @@
 - [pack](https://buildpacks.io/docs/tools/pack/) >= `0.23.0`
 - [func](https://github.com/knative-sandbox/kn-plugin-func/blob/main/docs/installing_cli.md)
 
-## Building your function
 
-You can build your function using our provided builder, which already includes buildpacks and an invoker layer:
+## Deployment
 
+### Code iteration without OCI image
+Use node directly: 
+```
+npm install
+npm start
+curl localhost:8080
+```
+
+### Run the image locally using Docker
+
+Build your image and run it using Docker: 
 ```
 pack build node-function --path . --buildpack paketo-buildpacks/nodejs --builder paketobuildpacks/builder:base
-```
-
-Where `node-function` is the name of your runnable function image, later used by Docker.
-
-## Local Deployment
-
-### Docker
-
-This assumes you have Docker Desktop properly installed and running.
-
-With Docker Desktop running, authenticated, and the ports (default `8080`) available:
-
-```
 docker run -it --rm -p 8080:8080 node-function
 curl localhost:8080
 ```
 
-### Tilt
+### Run the image using Tilt in a Kubernetes cluster
 
 You may use [tilt](https://github.com/tilt-dev/tilt) `>v0.27.2` in combination with TAP's VS Code plugin to enable live development features including Application Live View and Live Update.
 
 Update the `allow_k8s_contexts` line of the `Tiltfile` to indicate the Kubernetes context to use. 
 
 Update the `Tiltfile` or set the SOURCE_IMAGE environment variable to indicate the registry path where TAP should store your image. 
+
 ```
 export SOURCE_IMAGE=registry-fqdn/project/my-function-name
+tilt up
+tilt down
 ```
 
+### Run the image using the tanzu cli
 
-## Handy Tips
+```
+tanzu apps workload apply -f config/workload.yaml --source-image dev.registry.tanzu.vmware.com/jeltgroth/nodefunc
+tanzu apps workload get node-function | grep http
+```
 
 ## Testing
 

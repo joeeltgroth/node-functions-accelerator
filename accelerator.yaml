@@ -8,7 +8,6 @@ accelerator:
   - serverless
   - knative
   - faas
-  - SomethingCapitalized
 
   # options for the UI
   options:

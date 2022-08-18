@@ -11,18 +11,12 @@
 You can build your function using our provided builder, which already includes buildpacks and an invoker layer:
 
 ```
-pack build node-function --path . --builder ghcr.io/vmware-tanzu/function-buildpacks-for-knative/functions-builder:0.0.12 --env BP_FUNCTION=functions.Hire
+pack build node-function --path . --buildpack paketo-buildpacks/nodejs --builder paketobuildpacks/builder:base
 ```
 
 Where `node-function` is the name of your runnable function image, later used by Docker.
 
 ## Local Deployment
-
-### Tilt
-
-You may use [tilt](https://github.com/tilt-dev/tilt) `>v0.27.2` in combination with TAP's VS Code plugin to enable live development features including Application Live View and Live Update.
-
-You will have to update some fields in the root directory's `Tiltfile` to connect your live session to Kubernetes.
 
 ### Docker
 
@@ -32,35 +26,22 @@ With Docker Desktop running, authenticated, and the ports (default `8080`) avail
 
 ```
 docker run -it --rm -p 8080:8080 node-function
+curl localhost:8080
 ```
+
+### Tilt
+
+You may use [tilt](https://github.com/tilt-dev/tilt) `>v0.27.2` in combination with TAP's VS Code plugin to enable live development features including Application Live View and Live Update.
+
+Update the `allow_k8s_contexts` line of the `Tiltfile` to indicate the Kubernetes context to use. 
+
+Update the `Tiltfile` or set the SOURCE_IMAGE environment variable to indicate the registry path where TAP should store your image. 
+```
+export SOURCE_IMAGE=registry-fqdn/project/my-function-name
+```
+
 
 ## Handy Tips
-
-### Naming The Function
-
-There is an environment variable called BP_FUNCTION.  Use this to point to the 
-Java class that contains your function. The default is `functions.Hire` which indicates the `functions` package and `Hire` class. 
-Note that you much use this variable in the pack cli when building locally and in the config/workload.yaml file when using the tanzu
-cli (and therefore `tilt up`)
-
-### Java Dependencies
-
-If you need to add dependencies to your Java function, use Maven or Gradle in the normal fashion.  The Maven and Gradle build files
-default to building a fat runnable jar.  This allows your additional dependencies to be included and available during runtime. 
-
-For example, you could add the following to pom.xml
-
-```
-<dependencies>
-  <dependency>
-    <groupId>org.apache.commons</groupId>
-    <artifactId>commons-lang3</artifactId>
-    <version>3.7</version>
-  </dependency>
-</dependencies>
-```
-
-which would allow you to add `import org.apache.commons.lang3.StringUtils;` to your Java code and make use of StringUtils. 
 
 ## Testing
 
@@ -104,30 +85,17 @@ After [deploying](https://github.com/vmware-tanzu/function-buildpacks-for-knativ
 curl -X POST -H "Content-Type: application/cloudevents+json" -d @cloudevent.json http://localhost:8080
 ```
 
-## TAP Deployment - Alpha
-
-### Deploying to Kubernetes
-
-> NOTE: The provided `config/workload.yaml` file uses the Git URL for this sample. When you want to modify the source, you must push the code to your own Git repository and then update the `spec.source.git` information in the `config/workload.yaml` file.
+## TAP Deployment
 
 
 ## Deploying to Kubernetes as a TAP workload with Tanzu CLI
 
-You need to select the accelerator option `Include TAP deployment resources` when generating the project for the steps below to function.
+TAP can deploy workloads directly from a git repository.  Push your function's source code to a git repository and update `spec.source.git` in the `config/workload.yaml` file to point to that repository. 
 
-When you are done developing your app, you can simply deploy it using:
+Then, use this command: 
 
 ```
 tanzu apps workload apply -f config/workload.yaml
-```
-
-If you would like deploy the code from your local working directory you can use the following command:
-
-```
-tanzu apps workload create node-function -f config/workload.yaml \
-  --local-path . \
-  --source-image <REPOSITORY-PREFIX>/node-function-source \
-  --type web
 ```
 
 ## Interacting with Tanzu Application Platform

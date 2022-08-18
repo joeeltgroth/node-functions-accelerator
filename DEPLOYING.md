@@ -11,10 +11,10 @@
 You can build your function using our provided builder, which already includes buildpacks and an invoker layer:
 
 ```
-pack build my-java-fn --path . --builder ghcr.io/vmware-tanzu/function-buildpacks-for-knative/functions-builder:0.0.12 --env BP_FUNCTION=functions.Hire
+pack build node-function --path . --builder ghcr.io/vmware-tanzu/function-buildpacks-for-knative/functions-builder:0.0.12 --env BP_FUNCTION=functions.Hire
 ```
 
-Where `my-java-fn` is the name of your runnable function image, later used by Docker.
+Where `node-function` is the name of your runnable function image, later used by Docker.
 
 ## Local Deployment
 
@@ -31,7 +31,7 @@ This assumes you have Docker Desktop properly installed and running.
 With Docker Desktop running, authenticated, and the ports (default `8080`) available:
 
 ```
-docker run -it --rm -p 8080:8080 my-java-fn
+docker run -it --rm -p 8080:8080 node-function
 ```
 
 ## Handy Tips
@@ -124,9 +124,9 @@ tanzu apps workload apply -f config/workload.yaml
 If you would like deploy the code from your local working directory you can use the following command:
 
 ```
-tanzu apps workload create my-java-fn -f config/workload.yaml \
+tanzu apps workload create node-function -f config/workload.yaml \
   --local-path . \
-  --source-image <REPOSITORY-PREFIX>/my-java-fn-source \
+  --source-image <REPOSITORY-PREFIX>/node-function-source \
   --type web
 ```
 
@@ -135,7 +135,7 @@ tanzu apps workload create my-java-fn -f config/workload.yaml \
 Determine the URL to use for the accessing the app by running:
 
 ```
-tanzu apps workload get my-java-fn
+tanzu apps workload get node-function
 ```
 
 > NOTE: This depends on the TAP installation having DNS configured for the Knative ingress.

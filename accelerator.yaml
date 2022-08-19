@@ -20,7 +20,7 @@ accelerator:
 engine:
   merge:
     - include: [ "**" ]
-      exclude: [ "package.json", "config/**", "catalog/**", "README.md", "DEPLOYING.md" ]
+      exclude: [ "package.json", "config/**", "catalog/**", "README.md", "DEPLOYING.md", "test.sh" ]
     - include: [ "package.json" ]
       chain:
       - type: ReplaceText

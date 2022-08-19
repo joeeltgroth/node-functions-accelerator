@@ -2,8 +2,9 @@
 SOURCE_IMAGE = os.getenv("SOURCE_IMAGE", default='source-image-location') # CHANGEME - replace `source-image-location` with your writable repository
 LOCAL_PATH = os.getenv("LOCAL_PATH", default='.')
 NAMESPACE = os.getenv("NAMESPACE", default='default')
+K8S_TEST_CONTEXT = os.getenv("K8S_TEST_CONTEXT", default='')
 
-allow_k8s_contexts('your-k8s-context') # CHANGEME - replace `your-k8s-context` with your targeted Kubernetes context
+allow_k8s_contexts(K8S_TEST_CONTEXT)
 
 k8s_custom_deploy(
     'node-function',

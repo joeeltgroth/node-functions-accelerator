@@ -41,6 +41,13 @@ engine:
         substitutions:
         - text: node-function
           with: "#artifactId"
+    - include: [ "Tiltfile" ]
+      condition: "#includeTap"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: node-function
+          with: "#artifactId"
     - name: README
       type: Combo
       onConflict: Append

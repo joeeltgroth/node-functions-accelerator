@@ -1,7 +1,7 @@
 # node-functions-accelerator
 Maintained by Function Buildpacks for Knative Team (Cloud Native Runtimes)
 
-This is a starter Node.js function. 
+This repo contains a simple Node.js function that can be built and deployed as a TAP serverless workload.
 
 Write your function in /function-dir/index.js. 
 

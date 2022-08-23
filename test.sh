@@ -1,12 +1,18 @@
 #!/bin/bash
 #set -e
 
+# Delete the previous run
+rm -rf test-result
+
+# Prerequisites: set these two environment variables for the Tiltfile
+#SOURCE_IMAGE
+#K8S_TEST_CONTEXT
 
 # Install this accelerator in the current cluster.
 tanzu accelerator apply -f k8s-resource.yaml -n accelerator-system
 
 # Wait and check that it is ready? 
-sleep 10
+sleep 15
 
 # Generate a function project zip from the accelerator 
 mkdir -p test-result
@@ -20,9 +26,10 @@ kill -9 $PORT_FORWARD_PID
 tar -xzvf nodejsfunctest.zip
 pushd nodejsfunctest
 
-# Configure the Tiltfile
-SOURCE_IMAGE=dev.registry.tanzu.vmware.com/jeltgroth/nodefunc
-K8S_TEST_CONTEXT="gke_daisy-284300_us-central1-c_eltgroth-tap"
+# tilt up, wait, and curl the expectd endpoint
+tilt up
+sleep 30
+curl localhost:8080
 
 popd
 popd 

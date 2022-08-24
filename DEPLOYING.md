@@ -29,7 +29,7 @@ curl localhost:8080
 ```
 rm -rf node_modules
 rm package-lock.json
-tanzu apps workload apply -f config/workload.yaml --source-image <repository>
+tanzu apps workload apply -f config/workload.yaml --local-path . --source-image <repository>
 tanzu apps workload tail node-function
 tanzu apps workload get node-function
 ```

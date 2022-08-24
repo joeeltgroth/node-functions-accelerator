@@ -1,7 +1,7 @@
 accelerator:
   displayName: Node Function
   description: A Node.js sample function using FaaS Node.js Runtime Framework
-  iconUrl: https://raw.githubusercontent.com/sample-accelerators/java-functions-accelerator/main/functions-icon.png
+  iconUrl: functions-icon.png
   tags:
   - node
   - function

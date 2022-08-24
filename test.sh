@@ -36,8 +36,8 @@ kill -9 $PORT_FORWARD_PID
 #tilt up
 #sleep 30
 
-echo 'curling the expected endpoint'
-curl localhost:8080
+#echo 'curling the expected endpoint'
+#curl localhost:8080
 
 popd
 popd 
